@@ -29,15 +29,15 @@ function update()
 
 	local nodeRecord = getDatabaseNode()
 	local bReadOnly = WindowManager.getReadOnlyState(nodeRecord)
-	local bID = LibraryData.getIDState("item", nodeRecord)
+	local bID = LibraryData.getIDState('item', nodeRecord)
 
 	local sItemSubwindow = type_stats.getValue() -- 'item_main_armor', 'item_main_weapon', or ''
 
-	WindowManager.callSafeControlUpdate(self, "substance", bReadOnly, not bID)
-	WindowManager.callSafeControlUpdate(self, "size", bReadOnly)
-	WindowManager.callSafeControlUpdate(self, "thickness", bReadOnly)
+	WindowManager.callSafeControlUpdate(self, 'substance', bReadOnly, not bID)
+	WindowManager.callSafeControlUpdate(self, 'size', bReadOnly)
+	WindowManager.callSafeControlUpdate(self, 'thickness', bReadOnly)
 
-	if sItemSubwindow == "item_main_armor" then
+	if sItemSubwindow == 'item_main_armor' then
 		thickness.setVisible(false)
 		thickness_label.setVisible(false)
 	end

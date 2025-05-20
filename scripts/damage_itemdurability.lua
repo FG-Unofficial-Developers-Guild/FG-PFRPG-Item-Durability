@@ -10,19 +10,19 @@ local function adjustDamageTypes(nDmgTotal, tTypes, bIsRanged)
 		return 0
 	end
 
-	local tNone = { "nonlethal", "critical", "positive", "negative" }
+	local tNone = { 'nonlethal', 'critical', 'positive', 'negative' }
 
-	local tPFEnergyHalf = { "fire", "cold", "acid", "lightning", "sonic" }
+	local tPFEnergyHalf = { 'fire', 'cold', 'acid', 'lightning', 'sonic' }
 
-	local t35eEnergyHalf = { "electricity", "fire" }
-	local t35eEnergyQuarter = { "cold" }
+	local t35eEnergyHalf = { 'electricity', 'fire' }
+	local t35eEnergyQuarter = { 'cold' }
 
 	if bIsRanged then
 		nDmgTotal = nDmgTotal / 2
 	end
 
 	for _, v in pairs(tTypes) do
-		v = string.gsub(v, "%s+", "")
+		v = string.gsub(v, '%s+', '')
 		for _, vv in pairs(tNone) do
 			if vv == v then
 				nDmgTotal = 0
@@ -62,18 +62,18 @@ end
 local function findTypedDamage(sDamage, bIsRanged)
 	local nFieldStart = 1
 
-	local sDmgStart = string.find(sDamage, "%(", nFieldStart)
+	local sDmgStart = string.find(sDamage, '%(', nFieldStart)
 	local sDmg = string.sub(sDamage, sDmgStart + 1, string.len(sDamage) - 1)
-	local nDmgTotalStart = string.find(sDmg, "=", nFieldStart)
+	local nDmgTotalStart = string.find(sDmg, '=', nFieldStart)
 	if nDmgTotalStart then
 		sDmg = string.sub(sDmg, nDmgTotalStart + 1, string.len(sDamage))
 	end
 
-	local sTypes = string.lower(string.sub(sDamage, nFieldStart, sDmgStart - 2) .. ",")
+	local sTypes = string.lower(string.sub(sDamage, nFieldStart, sDmgStart - 2) .. ',')
 	local tTypes = {}
 
 	repeat
-		local nNextI = string.find(sTypes, ",", nFieldStart)
+		local nNextI = string.find(sTypes, ',', nFieldStart)
 		table.insert(tTypes, string.sub(sTypes, nFieldStart, nNextI - 1))
 		nFieldStart = nNextI + 1
 	until nFieldStart > string.len(sTypes)
@@ -83,7 +83,7 @@ end
 
 ---	This function
 local function setItemDamage(nodeItem, nDmgTotal, nBypassThresh)
-	local nHardness = DB.getValue(nodeItem, "hardness")
+	local nHardness = DB.getValue(nodeItem, 'hardness')
 	if nBypassThresh then
 		if nBypassThresh > nHardness then
 			nHardness = 0
@@ -92,8 +92,8 @@ local function setItemDamage(nodeItem, nDmgTotal, nBypassThresh)
 
 	local nModifiedDamage = nDmgTotal - nHardness
 	if nModifiedDamage > 0 then
-		local nPreviousDmg = DB.getValue(nodeItem, "itemdamage")
-		DB.setValue(nodeItem, "itemdamage", "number", nPreviousDmg + nModifiedDamage)
+		local nPreviousDmg = DB.getValue(nodeItem, 'itemdamage')
+		DB.setValue(nodeItem, 'itemdamage', 'number', nPreviousDmg + nModifiedDamage)
 	end
 end
 
@@ -109,11 +109,11 @@ local function sumTypes(nodeItem, tDamageTypes, nBypassThresh)
 	for _, v in ipairs(tDamageTypes) do
 		local nFieldStart = 1
 
-		if string.find(v, "%[DAMAGE %(R%)%]", nFieldStart) then
+		if string.find(v, '%[DAMAGE %(R%)%]', nFieldStart) then
 			bIsRanged = true
 		end
 
-		local nTypePosition = string.find(v, "%[TYPE: ", nFieldStart)
+		local nTypePosition = string.find(v, '%[TYPE: ', nFieldStart)
 		if nTypePosition then
 			local nFieldStop = string.len(v)
 			local sDamage = string.sub(v, nTypePosition + 7, nFieldStop - 1) -- format is "slashing (1d4+5=4)"
@@ -133,14 +133,14 @@ function splitDamageTypes(nodeItem, sDragInfo)
 	local nFieldStart = 1
 	local tDamageTypes = {}
 	repeat
-		local nexti_s = string.find(sDragInfo, "%[", nFieldStart)
-		local nexti_e = string.find(sDragInfo, "%]", nFieldStart)
+		local nexti_s = string.find(sDragInfo, '%[', nFieldStart)
+		local nexti_e = string.find(sDragInfo, '%]', nFieldStart)
 		table.insert(tDamageTypes, string.sub(sDragInfo, nexti_s, nexti_e))
 		nFieldStart = nexti_e + 1
 	until nFieldStart > string.len(sDragInfo)
 
 	local nBypassThresh = nil
-	if string.find(string.lower(sDragInfo), "adamantine", 1) then
+	if string.find(string.lower(sDragInfo), 'adamantine', 1) then
 		nBypassThresh = 20
 	end
 	sumTypes(nodeItem, tDamageTypes, nBypassThresh)

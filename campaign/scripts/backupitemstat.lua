@@ -6,11 +6,11 @@
 function backupValue()
 	local nodeItem = window.getDatabaseNode()
 
-	local nItemBrokenState = DB.getValue(nodeItem, "broken")
+	local nItemBrokenState = DB.getValue(nodeItem, 'broken')
 	local nItemValue = DB.getValue(nodeItem, getName())
 
-	if nItemBrokenState == 0 and string.lower(DB.getValue(nodeItem, "type", "")) == "armor" then
-		DB.setValue(nodeItem, getName() .. ".backup", "number", nItemValue)
+	if nItemBrokenState == 0 and string.lower(DB.getValue(nodeItem, 'type', '')) == 'armor' then
+		DB.setValue(nodeItem, getName() .. '.backup', 'number', nItemValue)
 	end
 end
 
