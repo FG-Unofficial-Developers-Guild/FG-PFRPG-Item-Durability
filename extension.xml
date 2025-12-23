@@ -6,7 +6,7 @@
 	<properties>
 		<name>Feature: Item Durability</name>
 		<version>2.14</version>
-		<author>bmos (Wil Thieme)</author>
+		<author>bmos (Ramona T)</author>
 		<description>This extension adds hardness, hitpoints, and damage fields to item sheets. Damage rolled can be dragged to the item damage field to have hardness subtracted and the damaged added to the previous field contents. Weapons and Armor that gain the damaged condition are penalised accordingly and destroyed items are automatically un-equipped (but not removed--yet).</description>
 		<loadorder>61</loadorder>
 		<ruleset>
